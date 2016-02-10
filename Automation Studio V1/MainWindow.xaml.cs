@@ -53,7 +53,7 @@ namespace Automation_Studio_V1
             string excelpath = "Provider=Microsoft.Jet.OLEDB.4.0;Data Source=" + ExcelFilePath.Text + ";Extended Properties=\"Excel 8.0;HDR=Yes;\";";
             OleDbConnection excelconn = new OleDbConnection(excelpath);
 
-            OleDbDataAdapter exceldataadapter = new OleDbDataAdapter("Select * From [" + Sheet.Text + "$]" ,excelconn);
+            OleDbDataAdapter exceldataadapter = new OleDbDataAdapter("Select * From [" + Sheet.Text + "$]", excelconn);
             DataTable exceldt = new DataTable();
 
             exceldataadapter.Fill(exceldt);
@@ -68,6 +68,20 @@ namespace Automation_Studio_V1
             if (openfiledialogexcel.ShowDialog() == true)
             {
                 this.ExcelFilePath.Text = openfiledialogexcel.FileName;
+            }
+        }
+
+        private void CreateTabelButton_Click(object sender, RoutedEventArgs e)
+        {
+            string ConString1 = ConfigurationManager.ConnectionStrings["Automation_Studio_V1.Properties.Settings.APAV1ConnectionString"].ConnectionString;
+            string CmdString1 = string.Empty;
+            using (SqlConnection con1 = new SqlConnection(ConString1))
+            {
+                CmdString1 = "CREATE TABLE Region (RegionID varchar(50), RegionDescription varchar(50))";
+                SqlCommand cmd1 = new SqlCommand(CmdString1, con1);
+                SqlDataAdapter sda = new SqlDataAdapter(cmd1);
+
+
             }
         }
     }

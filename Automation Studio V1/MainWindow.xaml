@@ -11,6 +11,7 @@
                 <Grid>
                     <Button Content="Choose Excel File" Margin="49,165,974.6,140" Click="ChooseExcelButton_Click"/>
                     <Button Content="Show Excel" Margin="49,63,974.6,233" Click="ShowExcelButton_Click"/>
+                    <Button Content="Create Tabel" Margin="49,233,974.6,63" Click="CreateTabelButton_Click"/>
                     <DataGrid Margin="278,47,203.6,70" Name="ExcelData" HorizontalAlignment="Left" VerticalAlignment="Top" Height="290" Width="950" />
                     <TextBox Name="ExcelFilePath" HorizontalAlignment="Left" Height="22" Margin="49,304,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="355"/>
                     <TextBox Name="Sheet" Height="23" TextWrapping="Wrap" Text="TextBox" Width="120"/>

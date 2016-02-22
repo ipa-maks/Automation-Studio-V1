@@ -8,18 +8,25 @@
                 <DataGrid Name="ShowData" HorizontalAlignment="Left" Margin="50,46,0,0" VerticalAlignment="Top" Height="290" Width="765"/>
             </TabItem>
             <TabItem Header="Data Input">
-                <Grid>
-                    <Button Content="Choose Excel File" Margin="49,165,974.6,140" Click="ChooseExcelButton_Click"/>
-                    <Button Content="Show Excel" Margin="49,63,974.6,233" Click="ShowExcelButton_Click"/>
-                    <Button Content="Create Tabel" Margin="49,233,974.6,63" Click="CreateTabelButton_Click"/>
-                    <DataGrid Margin="278,47,203.6,70" Name="ExcelData" HorizontalAlignment="Left" VerticalAlignment="Top" Height="290" Width="950" />
+                <Grid Margin="-32,-43,31.6,43">
+                    <Button Content="Choose Excel File" Margin="49,100,974.6,205" Click="ChooseExcelButton_Click"/>
+                    <Button Content="Show Excel" Margin="49,27,974.6,269" Click="ShowExcelButton_Click"/>
+                    <Button Content="Show Table in Grid" Margin="49,164,974.6,132" Click="ShowTableInGridButton_Click"/>
+                    <DataGrid Margin="576,47,-50,0" Name="ExcelData" HorizontalAlignment="Left" VerticalAlignment="Top" Height="290" Width="652" />
                     <TextBox Name="ExcelFilePath" HorizontalAlignment="Left" Height="22" Margin="49,304,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="355"/>
-                    <TextBox Name="Sheet" Height="23" TextWrapping="Wrap" Text="TextBox" Width="120"/>
+                    <TextBox Name="Sheet" Height="23" TextWrapping="Wrap" Text="TextBox" Width="120" Margin="420,239,638,90"/>
+                    <Button Content="Create Table" HorizontalAlignment="Left" Margin="49,239,0,0" VerticalAlignment="Top" Width="154" Height="49" Click="CreateTabelButton_Click"/>
+                    <Button Content="Show all tabels" Height="100" Width="75" Margin="208,28,895,224" Click="ShowTablesButton_Click"/>
+                    <ListBox Name="TabelBox" HorizontalAlignment="Left" Height="121" Margin="236,154,0,0" VerticalAlignment="Top" Width="149"/>
+                    <ComboBox Name="ComboBox1" Margin="300,75,745,248"/>
+                    <Button Content="Update" HorizontalAlignment="Left" Margin="465,164,0,0" VerticalAlignment="Top" Width="75"/>
                 </Grid>
 
 
             </TabItem>
-            
+
+
+
 
         </TabControl>
 

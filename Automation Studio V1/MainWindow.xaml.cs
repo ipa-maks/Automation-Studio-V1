@@ -25,21 +25,35 @@ namespace Automation_Studio_V1
     /// </summary>
     public partial class MainWindow : Window
     {
+        // Variables defined at startup
+        string ConString = ConfigurationManager.ConnectionStrings["Automation_Studio_V1.Properties.Settings.APAV1ConnectionString"].ConnectionString; // Shows the path to the used Database
+        string SelectedDataTable;
+
+        private SqlDataAdapter PrivatAdapter;
+        private DataTable PrivatTable;
+        private SqlCommandBuilder cmbl;
+
+
         public MainWindow()
         {
+            // Methods called at startup
             InitializeComponent();
-            FillDataGrid();
+            FillDataGrid(ConString);
+
+
+
+
+
+
         }
 
-        private void FillDataGrid()
+        private void FillDataGrid(string ConString)
         {
-            string ConString = ConfigurationManager.ConnectionStrings["Automation_Studio_V1.Properties.Settings.APAV1ConnectionString"].ConnectionString;
-            string CmdString = string.Empty;
+            string CmdString = "SELECT Id, Name FROM Test_Factory";
+
             using (SqlConnection con = new SqlConnection(ConString))
             {
-                CmdString = "SELECT Id, Name FROM Test_Factory";
-                SqlCommand cmd = new SqlCommand(CmdString, con);
-                SqlDataAdapter sda = new SqlDataAdapter(cmd);
+                SqlDataAdapter sda = new SqlDataAdapter(CmdString, con);
                 DataTable dt = new DataTable("Test_Factory");
                 sda.Fill(dt);
                 ShowData.ItemsSource = dt.DefaultView;
@@ -71,18 +85,105 @@ namespace Automation_Studio_V1
             }
         }
 
+// Create New Table
+
         private void CreateTabelButton_Click(object sender, RoutedEventArgs e)
         {
-            string ConString1 = ConfigurationManager.ConnectionStrings["Automation_Studio_V1.Properties.Settings.APAV1ConnectionString"].ConnectionString;
-            string CmdString1 = string.Empty;
-            using (SqlConnection con1 = new SqlConnection(ConString1))
+            using (SqlConnection con = new SqlConnection(ConString))
             {
-                CmdString1 = "CREATE TABLE Region (RegionID varchar(50), RegionDescription varchar(50))";
-                SqlCommand cmd1 = new SqlCommand(CmdString1, con1);
-                SqlDataAdapter sda = new SqlDataAdapter(cmd1);
-
-
+                try
+                {
+                    con.Open();
+                    using (SqlCommand command = new SqlCommand("CREATE TABLE Factory_2(Id char(50),Name char(50));", con))
+                        command.ExecuteNonQuery();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message);
+                }
             }
         }
+
+        // Show available tables
+
+        private void ShowTablesButton_Click(object sender, RoutedEventArgs e)
+        {
+            GetTables();
+        }
+
+        public List<string> GetTables()
+        {
+            using (SqlConnection connection = new SqlConnection(ConString))
+            {
+                connection.Open();
+                DataTable schema = connection.GetSchema("Tables");
+                List<string> TableNames = new List<string>();
+                foreach (DataRow row in schema.Rows)
+                {
+                    TableNames.Add(row[2].ToString());
+                }
+                ComboBox1.ItemsSource = TableNames;
+                return TableNames;
+            }
+        }
+
+        // Get ComboBox string
+
+        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            // ... Get the ComboBox.
+            var ComboBox1 = sender as ComboBox;
+
+            // ... Set SelectedItem as Window Title.
+            SelectedDataTable = ComboBox1.SelectedItem as string;
+            this.Title = "Selected: " + SelectedDataTable;
+        }
+
+        // Fill Data Grid: Second Tab
+
+        private void ShowTableInGridButton_Click(object sender, RoutedEventArgs e)
+        {
+            FillDataGrid2();
+        }
+
+        private void FillDataGrid2()
+        {
+            String SelectedDataTable = ComboBox1.Text;
+
+
+            ExcelFilePath.Text = SelectedDataTable;
+            // string CmdString = "SELECT Id, Name FROM @Table";
+            string CmdString = String.Format("SELECT Id, Name FROM {0}", SelectedDataTable);
+            // string CmdString = "SELECT Id, Name FROM Test_Factory";
+            using (SqlConnection con = new SqlConnection(ConString))
+            {
+                SqlCommand cmd = new SqlCommand(CmdString, con);
+                // cmd.Parameters.AddWithValue("@table", ComboBox1.Text);
+             PrivatAdapter = new SqlDataAdapter(cmd);
+            // PrivatAdapter = new SqlDataAdapter(CmdString, con);
+            PrivatTable = new DataTable();
+
+            PrivatAdapter.Fill(PrivatTable);
+            ExcelData.ItemsSource = PrivatTable.DefaultView;
+            }
+        }
+
+        //private void UpdateButton_Click(object sender, RoutedEventArgs e)
+        //{
+        //        PrivatAdapter.Update(APAV1DataSet.Tables[SelectedDataTable]);
+        //}
     }
 }
+        
+    
+
+
+    
+
+
+
+
+
+
+
+    
